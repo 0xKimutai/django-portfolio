@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}About Me{% endblock %}
+
+{% block content %}
+<h2>About Me</h2>
+
+<div id="about">
+    <div class="container">
+        <div class="row">
+            <div class="about-col-1">
+                <!-- You can add an image or avatar here if needed -->
+            </div>
+
+            <div class="about-col-2">
+                <p>
+                    I am a web, app, and software designer and developer by profession.
+                    I have a Bachelor's Degree in Computer Science from the Catholic University of Eastern Africa.
+                </p>
+
+                <div class="tab-titles">
+                    <p class="tab-links active-link" onclick="openTab('Skills')">Skills</p>
+                    <p class="tab-links" onclick="openTab('Experience')">Experience</p>
+                    <p class="tab-links" onclick="openTab('Education')">Education</p>
+                </div>
+
+                <div class="tab-contents active-tab" id="Skills">
+                    <ul>
+                        <li><span>UI/UX</span><br>Designing Web/App Interfaces</li>
+                        <li><span>Web Development</span><br>Web/App Development</li>
+                        <li><span>App Development</span><br>Building Android/iOS apps</li>
+                    </ul>
+                </div>
+
+                <div class="tab-contents" id="Experience">
+                    <ul>
+                        <li><span>2021–Present</span><br>UI/UX Design Training</li>
+                        <li><span>2020–2021</span><br>Team Lead at TenwekApp LLC</li>
+                        <li><span>2020</span><br>UI/UX Design Executive at Kimm Digital</li>
+                    </ul>
+                </div>
+
+                <div class="tab-contents" id="Education">
+                    <ul>
+                        <li><span>2022</span><br>UI/UX Design Training - Tenwek Institute Inc</li>
+                        <li><span>2022</span><br>Web and App Interface Design - TenComm Limited</li>
+                        <li><span>2022</span><br>Bachelor's Degree - CUEA</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    var tablinks = document.getElementsByClassName("tab-links");
+    var tabcontents = document.getElementsByClassName("tab-contents");
+
+    function openTab(tabName) {
+        for (let tablink of tablinks) {
+            tablink.classList.remove("active-link");
+        }
+        for (let tabcontent of tabcontents) {
+            tabcontent.classList.remove("active-tab");
+        }
+        event.currentTarget.classList.add("active-link");
+        document.getElementById(tabName).classList.add("active-tab");
+    }
+</script>
+{% endblock %}

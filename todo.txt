@@ -1,27 +1,30 @@
-confirm project structure
+>>confirm project structure
     -Ensure django is installed and project runs locally
-Configure settings
+>>Configure settings
     -add 'portfolio' to settings.py
-static files set-up 
+>> Static files set-up 
     -Creatye staticdirectory for CSS, JS, images
     -Link static files in index.html
-URL Routing
+>>>URL Routing
     -set up urs in urls.py and include in main urls.py
     -map the home page to index.html
-Models 
+>>>Models 
     -Define models for portfolio
+        >name
+        >skills
+        >work/experience
     -Migrations
-Admin setup
+>>>Admin setup
     -Register models in admin.py
     -Add sample data via Django admin
-Views 
+>>>Views 
     -Create views to fetch and pass data to templates
-Templates 
+>>>Templates 
     -Update index.html to display dynamic content
     -Use template inheritance
-Styling
+>>>Styling
     -CSS
-Contact form 
+Contact form =>So people can contact
     -Add contact form
     -set up email backend or store messages
 Testing

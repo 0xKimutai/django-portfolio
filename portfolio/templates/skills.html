@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Skills{% endblock %}
+
+{% block content %}
+<h2>My Skills</h2>
+
+<div class="Skills">
+    <ul>
+        {% for skill in skills %}
+            <li>{{ skill.name }} - {{ skill.proficiency }}%</li>
+        {% empty %}
+            <li>No skills added yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

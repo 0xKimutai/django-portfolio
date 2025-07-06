@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="contact-h"><h2>Contact Me</h2></div>
+    
+<div class="contact-section">
+    {% if messages %}
+        {% for message in messages %}
+        <p id="thankyou-message" style="color: green;">{{ message }}</p>
+        <script>
+            setTimeout(function() {
+                var msg =document.getElementById('thankyou-message');
+                if (msg) { msg.style.display = 'none'; }
+
+            }, 3000); //3000ms = 3s
+        </script>
+        {% endfor %}
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}

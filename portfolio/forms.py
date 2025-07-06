@@ -1,4 +1,5 @@
 from django import forms
+from . models import ContactMessage
 
 class contactForm(forms.Form):
     name = forms.CharField(
