@@ -1,9 +1,206 @@
 {% extends "base.html" %}
-{% block title %}Home{% endblock %}
+{% load static %}
+
+{% block title %}Kevin Kimutai - Senior Python Engineer{% endblock %}
+
 {% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1 class="hero-title">
+                <span class="highlight">Senior Python Engineer</span><br>
+                Building Scalable Solutions
+            </h1>
+            <p class="hero-subtitle">
+                Experienced full-stack developer specializing in Python, Django, and modern web technologies. 
+                Passionate about creating robust, scalable applications and leading technical teams.
+            </p>
+            <div class="hero-actions">
+                <a href="{% url 'projects' %}" class="btn btn-primary">View My Work</a>
+                <a href="{% url 'contact' %}" class="btn btn-secondary">Get In Touch</a>
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-number">8+</span>
+                <span class="stat-label">Years Experience</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">50+</span>
+                <span class="stat-label">Projects Completed</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">15+</span>
+                <span class="stat-label">Technologies</span>
+            </div>
+        </div>
+    </div>
+</section>
 
-<div class="welcome-text">
-    <h2>Welcome to my site!</h2>
-</div>
+<!-- Current Role Section -->
+{% if current_experience %}
+<section class="current-role">
+    <div class="container">
+        <div class="role-card">
+            <div class="role-header">
+                <h2>Currently Working As</h2>
+            </div>
+            <div class="role-content">
+                <h3>{{ current_experience.title }}</h3>
+                <p class="company">{{ current_experience.company }}</p>
+                <p class="duration">
+                    {{ current_experience.start_date|date:"M Y" }} - Present
+                    {% if current_experience.location %}
+                        • {{ current_experience.location }}
+                    {% endif %}
+                </p>
+                <p class="description">{{ current_experience.description|truncatewords:30 }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
 
+<!-- Featured Projects Section -->
+<section class="featured-projects">
+    <div class="container">
+        <div class="section-header">
+            <h2>Featured Projects</h2>
+            <p>Showcasing some of my best work in web development, APIs, and data engineering</p>
+        </div>
+        
+        <div class="projects-grid">
+            {% for project in featured_projects %}
+            <div class="project-card">
+                {% if project.image %}
+                <div class="project-image">
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                </div>
+                {% endif %}
+                <div class="project-content">
+                    <div class="project-meta">
+                        <span class="project-type">{{ project.get_project_type_display }}</span>
+                        <span class="project-status {{ project.status }}">{{ project.get_status_display }}</span>
+                    </div>
+                    <h3 class="project-title">{{ project.title }}</h3>
+                    <p class="project-description">{{ project.description|truncatewords:20 }}</p>
+                    <div class="project-technologies">
+                        {% for tech in project.technologies|slice:":3" %}
+                        <span class="tech-tag">{{ tech }}</span>
+                        {% endfor %}
+                        {% if project.technologies|length > 3 %}
+                        <span class="tech-tag">+{{ project.technologies|length|add:"-3" }} more</span>
+                        {% endif %}
+                    </div>
+                    <div class="project-links">
+                        {% if project.github_url %}
+                        <a href="{{ project.github_url }}" target="_blank" class="project-link">
+                            <i class="fab fa-github"></i> Code
+                        </a>
+                        {% endif %}
+                        {% if project.live_url %}
+                        <a href="{{ project.live_url }}" target="_blank" class="project-link">
+                            <i class="fas fa-external-link-alt"></i> Live
+                        </a>
+                        {% endif %}
+                        <a href="{{ project.get_absolute_url }}" class="project-link">
+                            <i class="fas fa-info-circle"></i> Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="section-footer">
+            <a href="{% url 'projects' %}" class="btn btn-outline">View All Projects</a>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Overview Section -->
+<section class="skills-overview">
+    <div class="container">
+        <div class="section-header">
+            <h2>Technical Expertise</h2>
+            <p>Comprehensive skills across the full development stack</p>
+        </div>
+        
+        <div class="skills-grid">
+            {% for skill in featured_skills %}
+            <div class="skill-card">
+                <div class="skill-header">
+                    {% if skill.icon %}
+                    <i class="{{ skill.icon }}"></i>
+                    {% endif %}
+                    <h3>{{ skill.name }}</h3>
+                </div>
+                <div class="skill-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ skill.proficiency }}%"></div>
+                    </div>
+                    <span class="progress-text">{{ skill.proficiency }}%</span>
+                </div>
+                <div class="skill-meta">
+                    <span class="experience">{{ skill.years_experience }} years</span>
+                    <span class="category">{{ skill.get_category_display }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="section-footer">
+            <a href="{% url 'skills' %}" class="btn btn-outline">View All Skills</a>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Certifications Section -->
+{% if recent_certifications %}
+<section class="certifications">
+    <div class="container">
+        <div class="section-header">
+            <h2>Recent Certifications</h2>
+            <p>Continuous learning and professional development</p>
+        </div>
+        
+        <div class="certifications-grid">
+            {% for cert in recent_certifications %}
+            <div class="certification-card">
+                {% if cert.image %}
+                <div class="cert-image">
+                    <img src="{{ cert.image.url }}" alt="{{ cert.name }}">
+                </div>
+                {% endif %}
+                <div class="cert-content">
+                    <h3>{{ cert.name }}</h3>
+                    <p class="issuer">{{ cert.issuing_organization }}</p>
+                    <p class="date">Issued {{ cert.issue_date|date:"M Y" }}</p>
+                    {% if cert.credential_url %}
+                    <a href="{{ cert.credential_url }}" target="_blank" class="cert-link">
+                        Verify Credential
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Call to Action Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to Build Something Amazing?</h2>
+            <p>Let's discuss your project requirements and how I can help bring your ideas to life.</p>
+            <div class="cta-actions">
+                <a href="{% url 'contact' %}" class="btn btn-primary">Start a Project</a>
+                <a href="{% url 'about' %}" class="btn btn-secondary">Learn More About Me</a>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

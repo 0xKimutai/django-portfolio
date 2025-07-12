@@ -1,25 +1,152 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contact - Kevin Kimutai{% endblock %}
+
 {% block content %}
+<!-- Contact Header Section -->
+<section class="contact-header">
+    <div class="container">
+        <div class="section-header">
+            <h1>Get In Touch</h1>
+            <p>I'm always interested in new opportunities and exciting projects. Let's discuss how we can work together.</p>
+        </div>
+    </div>
+</section>
 
-<div class="contact-h"><h2>Contact Me</h2></div>
-    
-<div class="contact-section">
-    {% if messages %}
-        {% for message in messages %}
-        <p id="thankyou-message" style="color: green;">{{ message }}</p>
-        <script>
-            setTimeout(function() {
-                var msg =document.getElementById('thankyou-message');
-                if (msg) { msg.style.display = 'none'; }
+<!-- Contact Content Section -->
+<section class="contact-content">
+    <div class="container">
+        <div class="contact-grid">
+            <!-- Contact Form -->
+            <div class="contact-form-section">
+                <h2>Send Me a Message</h2>
+                <form method="post" class="contact-form">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                        <div class="error-message">{{ form.name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                        <div class="error-message">{{ form.email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.subject.id_for_label }}">{{ form.subject.label }}</label>
+                        {{ form.subject }}
+                        {% if form.subject.errors %}
+                        <div class="error-message">{{ form.subject.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="{{ form.company.id_for_label }}">{{ form.company.label }}</label>
+                            {{ form.company }}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+                            {{ form.phone }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+                        {{ form.message }}
+                        {% if form.message.errors %}
+                        <div class="error-message">{{ form.message.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Contact Information -->
+            <div class="contact-info-section">
+                <h2>Contact Information</h2>
+                
+                <div class="contact-info-grid">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Email</h3>
+                            <p>{{ contact_info.email }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Location</h3>
+                            <p>{{ contact_info.location }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-linkedin"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>LinkedIn</h3>
+                            <a href="{{ contact_info.linkedin }}" target="_blank">Connect on LinkedIn</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>GitHub</h3>
+                            <a href="{{ contact_info.github }}" target="_blank">View My Code</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-availability">
+                    <h3>Availability</h3>
+                    <p>I'm currently available for:</p>
+                    <ul>
+                        <li>Full-time opportunities</li>
+                        <li>Contract work</li>
+                        <li>Freelance projects</li>
+                        <li>Technical consulting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-            }, 3000); //3000ms = 3s
-        </script>
-        {% endfor %}
-    {% endif %}
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
-</div>
+<!-- Response Time Section -->
+<section class="response-time">
+    <div class="container">
+        <div class="response-content">
+            <div class="response-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="response-text">
+                <h3>Quick Response Time</h3>
+                <p>I typically respond to all inquiries within 24 hours during business days.</p>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

@@ -1,25 +1,183 @@
 {% extends "base.html" %}
-{% block title %}My Projects{% endblock %}
+{% load static %}
+
+{% block title %}Projects - Kevin Kimutai{% endblock %}
+
 {% block content %}
+<!-- Projects Header Section -->
+<section class="projects-header">
+    <div class="container">
+        <div class="section-header">
+            <h1>My Projects</h1>
+            <p>Showcasing my best work in web development, APIs, data science, and infrastructure</p>
+        </div>
+        
+        <!-- Project Filters -->
+        <div class="project-filters">
+            <form method="get" class="filter-form">
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label for="id_project_type">Project Type:</label>
+                        {{ filter_form.project_type }}
+                    </div>
+                    <div class="filter-group">
+                        <label for="id_status">Status:</label>
+                        {{ filter_form.status }}
+                    </div>
+                    <div class="filter-group">
+                        <label class="checkbox-label">
+                            {{ filter_form.featured_only }}
+                            <span>Featured Only</span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
 
-<h2>My Projects</h2>
-
-<div class="projects">
-    <ul>
-        {% for project in projects %}
-            <li>
-                <strong>{{ project.title }}</strong><br />
-                {{project.description}}<br />
+<!-- Projects Grid Section -->
+<section class="projects-section">
+    <div class="container">
+        {% if projects %}
+        <div class="projects-grid">
+            {% for project in projects %}
+            <div class="project-card">
                 {% if project.image %}
-                    <img src="{{ project.image.url }}" alt="{{ project.title }}" width="200"><br />
+                <div class="project-image">
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                </div>
+                {% else %}
+                <div class="project-image-placeholder">
+                    <i class="fas fa-code"></i>
+                </div>
                 {% endif %}
-                {% if project.link %}
-                    <a href="{{ project.link }}" target="_blank">View Project</a>
-                {% endif %}
-            </li>
-        {% empty %}
-            <li>No projects yet.</li>
-        {% endfor %}
-    </ul>
-</div>
+                
+                <div class="project-content">
+                    <div class="project-meta">
+                        <span class="project-type">{{ project.get_project_type_display }}</span>
+                        <span class="project-status {{ project.status }}">{{ project.get_status_display }}</span>
+                        {% if project.is_featured %}
+                        <span class="project-featured">⭐ Featured</span>
+                        {% endif %}
+                    </div>
+                    
+                    <h3 class="project-title">{{ project.title }}</h3>
+                    <p class="project-description">{{ project.description|truncatewords:25 }}</p>
+                    
+                    {% if project.technologies %}
+                    <div class="project-technologies">
+                        {% for tech in project.technologies|slice:":4" %}
+                        <span class="tech-tag">{{ tech }}</span>
+                        {% endfor %}
+                        {% if project.technologies|length > 4 %}
+                        <span class="tech-tag">+{{ project.technologies|length|add:"-4" }} more</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="project-timeline">
+                        <span class="timeline-text">
+                            {{ project.start_date|date:"M Y" }}
+                            {% if project.end_date %}
+                            - {{ project.end_date|date:"M Y" }}
+                            {% else %}
+                            - Present
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                    <div class="project-links">
+                        {% if project.github_url %}
+                        <a href="{{ project.github_url }}" target="_blank" class="project-link">
+                            <i class="fab fa-github"></i> Code
+                        </a>
+                        {% endif %}
+                        {% if project.live_url %}
+                        <a href="{{ project.live_url }}" target="_blank" class="project-link">
+                            <i class="fas fa-external-link-alt"></i> Live
+                        </a>
+                        {% endif %}
+                        {% if project.demo_url %}
+                        <a href="{{ project.demo_url }}" target="_blank" class="project-link">
+                            <i class="fas fa-play"></i> Demo
+                        </a>
+                        {% endif %}
+                        <a href="{{ project.get_absolute_url }}" class="project-link">
+                            <i class="fas fa-info-circle"></i> Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="page-link">
+                <i class="fas fa-chevron-left"></i> Previous
+            </a>
+            {% endif %}
+            
+            <span class="page-info">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+            
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="page-link">
+                Next <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        {% else %}
+        <div class="no-projects">
+            <div class="no-projects-content">
+                <i class="fas fa-folder-open"></i>
+                <h3>No projects found</h3>
+                <p>No projects match your current filters. Try adjusting your search criteria.</p>
+                <a href="{% url 'projects' %}" class="btn btn-primary">View All Projects</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Project Stats Section -->
+<section class="project-stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>{{ projects|length }}</h3>
+                    <p>Total Projects</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>{{ projects|dictsort:"is_featured"|length }}</h3>
+                    <p>Featured Projects</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>{{ projects|dictsort:"status"|length }}</h3>
+                    <p>Completed Projects</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

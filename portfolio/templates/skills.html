@@ -1,16 +1,121 @@
 {% extends "base.html" %}
-{% block title %}Skills{% endblock %}
+{% load static %}
+
+{% block title %}Skills - Kevin Kimutai{% endblock %}
 
 {% block content %}
-<h2>My Skills</h2>
+<!-- Skills Header Section -->
+<section class="skills-header">
+    <div class="container">
+        <div class="section-header">
+            <h1>Technical Skills</h1>
+            <p>Comprehensive overview of my technical expertise across the full development stack</p>
+        </div>
+        
+        <!-- Skills Overview -->
+        <div class="skills-overview-stats">
+            <div class="stat-item">
+                <span class="stat-number">{{ total_skills }}</span>
+                <span class="stat-label">Total Skills</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">{{ featured_skills|length }}</span>
+                <span class="stat-label">Featured Skills</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">{{ skills_by_category|length }}</span>
+                <span class="stat-label">Categories</span>
+            </div>
+        </div>
+    </div>
+</section>
 
-<div class="Skills">
-    <ul>
-        {% for skill in skills %}
-            <li>{{ skill.name }} - {{ skill.proficiency }}%</li>
-        {% empty %}
-            <li>No skills added yet.</li>
+<!-- Skills by Category Section -->
+<section class="skills-categories">
+    <div class="container">
+        {% for category, skills in skills_by_category.items %}
+        <div class="category-section">
+            <div class="category-header">
+                <h2>{{ category }}</h2>
+                <p>{{ skills|length }} skills in this category</p>
+            </div>
+            
+            <div class="skills-grid">
+                {% for skill in skills %}
+                <div class="skill-card {% if skill.is_featured %}featured{% endif %}">
+                    <div class="skill-header">
+                        {% if skill.icon %}
+                        <i class="{{ skill.icon }}"></i>
+                        {% else %}
+                        <i class="fas fa-tools"></i>
+                        {% endif %}
+                        <h3>{{ skill.name }}</h3>
+                        {% if skill.is_featured %}
+                        <span class="featured-badge">⭐</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="skill-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {{ skill.proficiency }}%"></div>
+                        </div>
+                        <span class="progress-text">{{ skill.proficiency }}%</span>
+                    </div>
+                    
+                    <div class="skill-meta">
+                        <span class="experience">{{ skill.years_experience }} years</span>
+                        <span class="category">{{ skill.get_category_display }}</span>
+                    </div>
+                    
+                    {% if skill.description %}
+                    <p class="skill-description">{{ skill.description }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
         {% endfor %}
-    </ul>
-</div>
+    </div>
+</section>
+
+<!-- Skills Summary Section -->
+<section class="skills-summary">
+    <div class="container">
+        <div class="summary-content">
+            <h2>Skills Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <h3>Backend Development</h3>
+                    <p>Expert in Python, Django, FastAPI, and database design</p>
+                </div>
+                <div class="summary-item">
+                    <h3>Frontend Development</h3>
+                    <p>Proficient in React, JavaScript, and modern CSS frameworks</p>
+                </div>
+                <div class="summary-item">
+                    <h3>DevOps & Infrastructure</h3>
+                    <p>Experience with Docker, AWS, and CI/CD pipelines</p>
+                </div>
+                <div class="summary-item">
+                    <h3>Database & Data Engineering</h3>
+                    <p>Skilled in PostgreSQL, Redis, and data modeling</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="skills-cta">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to Work Together?</h2>
+            <p>I'm always interested in new opportunities and challenging projects.</p>
+            <div class="cta-actions">
+                <a href="{% url 'contact' %}" class="btn btn-primary">Get In Touch</a>
+                <a href="{% url 'projects' %}" class="btn btn-outline">View My Work</a>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
